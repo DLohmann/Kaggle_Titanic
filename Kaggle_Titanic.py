@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #Python libraries
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import scipy
 import random as rand	#Used to determine initial weights
 from scipy.optimize import minimize
@@ -10,7 +10,7 @@ from scipy.optimize import minimize
 import read_files #Reads in the data
 
 passengerDataVectors = []
-survivalVector = []
+survivalVector = [] # Vector indicating the survival of passengers in the training data set
 
 def logistic (x, derivative=False):
 	if (derivative):
@@ -56,7 +56,8 @@ def error (W):
 	return sum
 
 
-def findModelAccuracy (W):
+# This function can only find the accuracy in predicting the training data, because Kaggle's data set did not include the survival of the passengers in the testing data
+def findModelAccuracyWithTrainingData (W):
 	print ("findModelAccuracy called!")
 	print ("There are " + str(len(passengerDataVectors)) + " passengerDataVectors")
 	numCorrect = 0
@@ -99,7 +100,7 @@ def main():
 	print ("Weights before training are: " + str(W))
 	
 	
-	numCorrect, numWrong = findModelAccuracy(W)
+	numCorrect, numWrong = findModelAccuracyWithTrainingData(W)
 	print ("predicted " + str(numCorrect) + " correctly of " + str(numCorrect + numWrong) + " total, at " + str(int(100 * numCorrect/(numCorrect + numWrong))) + "% accuracy")
 	
 	print ("\n------------training------------")
@@ -107,7 +108,7 @@ def main():
 	W = results.x
 	
 	
-	numCorrect, numWrong = findModelAccuracy(W)
+	numCorrect, numWrong = findModelAccuracyWithTrainingData(W)
 	print ("predicted " + str(numCorrect) + " correctly of " + str(numCorrect + numWrong) + " total, at " + str(int(100 * numCorrect/(numCorrect + numWrong))) + "% accuracy")
 	
 	
@@ -119,15 +120,18 @@ def main():
 	
 	print ("Weights after training are: " + str(W))
 	
-	#Read in the testing data
+	
 	
 	#Test the model:
 	print ("\n-----------------------------TESTING WITH TESTING DATA!!!-----------------------------\n")
 	
-	passengerDataVectors = read_files.readTestingData()
-	numCorrect, numWrong = findModelAccuracy(W)
-	print ("predicted " + str(numCorrect) + " correctly of " + str(numCorrect + numWrong) + " total, at " + str(int(100 * numCorrect/(numCorrect + numWrong))) + "% accuracy")
+	passengerDataVectors = read_files.readTestingData() #Read in the testing data
+	survivalPredictionVector = [0] * len(passengerDataVectors) # Survival prediction of passengers in testing data
 	
+	for i in range (len(passengerDataVectors)):
+		survivalPredictionVector[i] = 1 if (predict(passengerDataVectors[i], W) > 0.5) else 0
+		
+	read_files.writePredictionFile(survivalPredictionVector)
 	
 	
 #if this file is the module being run, __name__ == '__main__' Otherwise __name__ is name of module being run

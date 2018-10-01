@@ -1,39 +1,9 @@
 #!/usr/bin/env python
 
 from csv import reader
-#import numpy as np	# has np.array for vectors
+import numpy as np	# has np.array for vectors
 
-'''
-
-Titanic Kaggle Competition: https://www.kaggle.com/c/titanic
-
-Logistic regression inspired by: https://www.youtube.com/watch?v=H6ii7NFdDeg
-
-TODO:
-- Finish ticketToNum and cabinToNum
-- Include a way to use passenger's name in data. This could give info about whether a passenger survived. Factors such as a woman's prefix "Ms." vs "Mrs." and marriage data might potentially affect probability of survival? Maybe the type of name could influence the probability?
-- Extract features like deck number
-- Consider changing passengerVectors and survivalVector to numpy.arrays and setting the data type to float128 to prevent the warning "RuntimeWarning: overflow encountered in exp return 1/(1+scipy.exp(-1*x))". This happens when the weights are initially set as such:
-  W = [(10*rand.random() - 5) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -5 and 5
-  
-- Figure out why the size of the initial weights W affects how accurately the model predicts the training data after training
-  
-  
-  When weights are from -50 to 50, the accuracy starts at 344/891 (38%) and goes to 344/891 (38%)
-    W = [(100*rand.random() - 50) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -50 and 50
-  
-  When weights are from -5 to 5, the accuracy starts at 344/891 (38%) and goes to 552/891 (61%), and there is an "overflow in exp function" error
-    W = [(rand.random() - 0.5) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -5 and 5
-  
-  When weights are from -0.5 to 0.5, the accuracy starts at 344/891 (38%) and goes to 717/891 (80%), and there is an "overflow in exp function" error
-    W = [(rand.random() - 0.5) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -0.50 and 0.50
-	
-  When weights are 0, the accuracy starts at 549/891 (61%) and goes to 717/891 (80%), and there is an "overflow in exp function" error
-    W = [(0) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to 0
-
-	Maybe this is because the logistic function is mostly flat for x is very large (x > 10) or very small (x < -10), and so starting with larger numbers means that there is a higher probability that initially the exponent will be further from 0, where the logistic function is flatter, and so the model learns more slowly
-https://triangleinequality.wordpress.com/2013/09/08/basic-feature-engineering-with-the-titanic-data/
-'''
+numTrainingPassengers = 0 # The amount of passengers in the training data set
 
 #def nameToNum (name):
 
@@ -86,7 +56,7 @@ def readTrainingData ():
 		#PassengerId,Survived,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 		#    ,,,,,,,,,,,
 		passengerVector = [
-			float(line[0]),			# PassengerId
+			#float(line[0]),			# PassengerId
 			#float(line[1]), 		# Survived (not allowed to use)
 			float(line[2]), 		# Pclass  
 									# Name (not used currently)
@@ -107,12 +77,16 @@ def readTrainingData ():
 		
 	
 	#print ("passenger string is: " + passStr + "\n")	
-	rf.close()
+	rf.close
+	
+	global numTrainingPassengers #Get the total number of passengers in the training data set
+	numTrainingPassengers = len(passengerVectors)
+	
 	return passengerVectors, survivalVector
 	
 	
 def readTestingData ():
-	print ("readTrainingData called!!!\n")
+	print ("readTestingData called!!!\n")
 	rf = open ("test.csv", "r")
 	passengerVectors = [] # List of numerical vectors (more lists) that represent each passenger's data
 	
@@ -122,7 +96,7 @@ def readTestingData ():
 		#PassengerId,Pclass,Name,Sex,Age,SibSp,Parch,Ticket,Fare,Cabin,Embarked
 		#    ,,,,,,,,,,,
 		passengerVector = [
-			float(line[0]),			# PassengerId
+			#float(line[0]),			# PassengerId
 			#float(line[1]), 		# Survived (not allowed to use)
 			float(line[1]), 		# Pclass  
 									# Name (not used currently)
@@ -145,3 +119,13 @@ def readTestingData ():
 	#print ("passenger string is: " + passStr + "\n")	
 	rf.close()
 	return passengerVectors#, survivalVector
+
+def writePredictionFile (survivalPredictionVector):
+	wf = open ("Logistic_Regression_Prediction.csv", "w")
+	#print ("There are " + str(numTrainingPassengers) + " passengers in the training data set." )
+	wf.write ("PassengerId,Survived\n") # Write first line
+	for i in range (len(survivalPredictionVector)):
+		wf.write (str(numTrainingPassengers + 1 + i) + "," + str(survivalPredictionVector[i]) + "\n")
+	wf.close()
+	
+	
