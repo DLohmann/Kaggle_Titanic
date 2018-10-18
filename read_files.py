@@ -85,7 +85,7 @@ def readTrainingData ():
 	return passengerVectors, survivalVector
 	
 	
-def readTestingData ():
+def readTestingData (addConstant = False):
 	print ("readTestingData called!!!\n")
 	rf = open ("test.csv", "r")
 	passengerVectors = [] # List of numerical vectors (more lists) that represent each passenger's data
@@ -110,7 +110,8 @@ def readTestingData ():
 			embarkToNum(line[10]),	# Embarked
 		]
 		#passengerVector = line#line.split(",")
-		passengerVector.append(1) # Add a constant 1 term as a horizontal shift for the logistic function
+		if (addConstant):
+			passengerVector.append(1) # Add a constant 1 term as a horizontal shift for the logistic function
 		passengerVectors.append (passengerVector)
 		#survivalVector.append (float(line[1]))
 		#print (line)

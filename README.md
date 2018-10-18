@@ -32,3 +32,7 @@ TODO:
 	Maybe this is because the logistic function is mostly flat for x is very large (x > 10) or very small (x < -10), and so starting with larger numbers means that there is a higher probability that initially the exponent will be further from 0, where the logistic function is flatter, and so the model learns more slowly
 	
 	- Figure out how to pass the (partial) derivatives of the logistic function into scipy.optimize in order allow the minimize function to use gradient-based optimization algorithms that can speed up the optimization process. Gradient-based optimization algorithms are sometimes faster. And the derivative of the logistic function is already known.
+
+- Do the classification with the nearest neighbors algorithm. But instead of picking "k" neighbors, use all the neighbors, and assign each neighbor a weight which is the inverse of the Euclidean distance to that neighbor squared (1/r**2), and to calculate the Euclidean distance, assign each "i"th attribute in vector a weight W[i] which is chosen during optimization (so some dimensions are more important than others).
+
+- Add more and different error functions (loss functions) besides sum squared error
