@@ -190,7 +190,8 @@ def main():
 	
 	#Set initial weights, and include 1 extra space for constant term
 	rand.seed(33)
-	W = [(0) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -50 and 50
+	#W = [(0) for i in range (len(passengerDataVectors[0]))]	#+1)] # Set weights to random real numbers between -50 and 50
+	W = [(1.0) for i in range (len(passengerDataVectors[0]))]
 	print ("Weights before training are: " + str(W))
 	
 	
