@@ -122,7 +122,7 @@ def readTestingData (addConstant = False):
 	return passengerVectors#, survivalVector
 
 def writePredictionFile (survivalPredictionVector):
-	wf = open ("Logistic_Regression_Prediction.csv", "w")
+	wf = open ("New_Prediction.csv", "w")
 	#print ("There are " + str(numTrainingPassengers) + " passengers in the training data set." )
 	wf.write ("PassengerId,Survived\n") # Write first line
 	for i in range (len(survivalPredictionVector)):
