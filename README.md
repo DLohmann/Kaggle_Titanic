@@ -36,3 +36,11 @@ TODO:
 - Do the classification with the nearest neighbors algorithm. But instead of picking "k" neighbors, use all the neighbors, and assign each neighbor a weight which is the inverse of the Euclidean distance to that neighbor squared (1/r**2), and to calculate the Euclidean distance, assign each "i"th attribute in vector a weight W[i] which is chosen during optimization (so some dimensions are more important than others).
 
 - Add more and different error functions (loss functions) besides sum squared error
+
+- Organize files so that code for different machine learning algorithms does not mix
+
+- Use numpy or scipy arrays and vector operations instead of regular python arrays  and custom functions to improve speed. Many of these libraries may be written in C/C++, and will run faster than vector operations written in Python
+
+- Make the training code run in C++ for speed
+
+- Write a script to ssh the code to Google Cloud, Amazon Web service, Azure, or UC Merced's servers to train (if the code takes to long to train).
