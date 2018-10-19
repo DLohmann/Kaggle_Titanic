@@ -45,3 +45,7 @@ TODO:
 - Use Intel SSE instructions in C/C++ for speed
 
 - Write a script to ssh the code to Google Cloud, Amazon Web service, Azure, or UC Merced's servers to train (if the code takes to long to train).
+
+- Try using support vector machines for prediction
+
+- Try using neural networks for prediction (ie with Keras)
